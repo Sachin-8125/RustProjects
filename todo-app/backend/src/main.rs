@@ -29,9 +29,8 @@ async fn main() -> anyhow::Result<()> {
 
     // Database setup
     dotenv().ok();
-    let database_url = env::var("DATABASE_URL").unwrap_or_else(|_|
-        "postgres://avnadmin:AVNS_uhhrxMwIhJa5-dVkpoc@pg-7ee904a-sachin2317080-81fe.d.aivencloud.com:25431/defaultdb?sslmode=require".to_string()
-    );
+    let database_url = env::var("DATABASE_URL")
+        .expect("DATABASE_URL environment variable must be set");
     let pool = PgPool::connect(&database_url).await?;
 
     // Run migrations

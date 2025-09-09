@@ -15,3 +15,6 @@
 .idea/
 .DS_Store
 *.log
+
+# Ignore environment files
+.env
