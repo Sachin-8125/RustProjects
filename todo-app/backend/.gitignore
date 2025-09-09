@@ -1,0 +1,17 @@
+# Ignore the build output directory
+/target/
+
+# Ignore compiled executables
+*.exe
+
+# Ignore dependency files
+*.d
+
+# Ignore Rust library files
+*.rlib
+
+# Ignore editor and OS-specific files
+.vscode/
+.idea/
+.DS_Store
+*.log
