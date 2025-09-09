@@ -9,9 +9,13 @@ use axum::async_trait;
 use bcrypt::{hash, verify, DEFAULT_COST};
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
+use std::env;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-const JWT_SECRET: &str = "token-secret";
+fn get_jwt_secret() -> String {
+    env::var("JWT_SECRET")
+        .expect("JWT_SECRET environment variable must be set")
+}
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Claims {
@@ -33,14 +37,14 @@ pub fn create_token(user_id: &str) -> Result<String, jsonwebtoken::errors::Error
     encode(
         &Header::default(),
         &claims,
-        &EncodingKey::from_secret(JWT_SECRET.as_ref()),
+        &EncodingKey::from_secret(get_jwt_secret().as_ref()),
     )
 }
 
 pub fn verify_token(token: &str) -> Result<Claims, jsonwebtoken::errors::Error> {
     decode::<Claims>(
         token,
-        &DecodingKey::from_secret(JWT_SECRET.as_ref()),
+        &DecodingKey::from_secret(get_jwt_secret().as_ref()),
         &Validation::new(Algorithm::HS256),
     )
     .map(|data| data.claims)
